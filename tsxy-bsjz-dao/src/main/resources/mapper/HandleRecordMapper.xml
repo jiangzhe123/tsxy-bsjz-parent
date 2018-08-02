@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tsxy.bsjz.platform.dao.mapper.HandleRecordMapper">
+  <resultMap id="BaseResultMap" type="tsxy.bsjz.platform.model.HandleRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="handleName" jdbcType="VARCHAR" property="handleName" />
+    <result column="handleRole" jdbcType="VARCHAR" property="handleRole" />
+    <result column="handleContent" jdbcType="VARCHAR" property="handleContent" />
+    <result column="handleDate" jdbcType="TIMESTAMP" property="handleDate" />
+    <result column="deleteState" jdbcType="INTEGER" property="deleteState" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, handleName, handleRole, handleContent, handleDate, deleteState
+  </sql>
+  <select id="selectByExample" parameterType="tsxy.bsjz.platform.model.HandleRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_handle_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_handle_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_handle_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="tsxy.bsjz.platform.model.HandleRecordExample">
+    delete from t_handle_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="tsxy.bsjz.platform.model.HandleRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_handle_record (handleName, handleRole, handleContent, 
+      handleDate, deleteState)
+    values (#{handleName,jdbcType=VARCHAR}, #{handleRole,jdbcType=VARCHAR}, #{handleContent,jdbcType=VARCHAR}, 
+      #{handleDate,jdbcType=TIMESTAMP}, #{deleteState,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="tsxy.bsjz.platform.model.HandleRecord">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_handle_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="handleName != null">
+        handleName,
+      </if>
+      <if test="handleRole != null">
+        handleRole,
+      </if>
+      <if test="handleContent != null">
+        handleContent,
+      </if>
+      <if test="handleDate != null">
+        handleDate,
+      </if>
+      <if test="deleteState != null">
+        deleteState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="handleName != null">
+        #{handleName,jdbcType=VARCHAR},
+      </if>
+      <if test="handleRole != null">
+        #{handleRole,jdbcType=VARCHAR},
+      </if>
+      <if test="handleContent != null">
+        #{handleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="handleDate != null">
+        #{handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        #{deleteState,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="tsxy.bsjz.platform.model.HandleRecordExample" resultType="java.lang.Long">
+    select count(*) from t_handle_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_handle_record
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.handleName != null">
+        handleName = #{record.handleName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleRole != null">
+        handleRole = #{record.handleRole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleContent != null">
+        handleContent = #{record.handleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.handleDate != null">
+        handleDate = #{record.handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleteState != null">
+        deleteState = #{record.deleteState,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_handle_record
+    set id = #{record.id,jdbcType=INTEGER},
+      handleName = #{record.handleName,jdbcType=VARCHAR},
+      handleRole = #{record.handleRole,jdbcType=VARCHAR},
+      handleContent = #{record.handleContent,jdbcType=VARCHAR},
+      handleDate = #{record.handleDate,jdbcType=TIMESTAMP},
+      deleteState = #{record.deleteState,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="tsxy.bsjz.platform.model.HandleRecord">
+    update t_handle_record
+    <set>
+      <if test="handleName != null">
+        handleName = #{handleName,jdbcType=VARCHAR},
+      </if>
+      <if test="handleRole != null">
+        handleRole = #{handleRole,jdbcType=VARCHAR},
+      </if>
+      <if test="handleContent != null">
+        handleContent = #{handleContent,jdbcType=VARCHAR},
+      </if>
+      <if test="handleDate != null">
+        handleDate = #{handleDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteState != null">
+        deleteState = #{deleteState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="tsxy.bsjz.platform.model.HandleRecord">
+    update t_handle_record
+    set handleName = #{handleName,jdbcType=VARCHAR},
+      handleRole = #{handleRole,jdbcType=VARCHAR},
+      handleContent = #{handleContent,jdbcType=VARCHAR},
+      handleDate = #{handleDate,jdbcType=TIMESTAMP},
+      deleteState = #{deleteState,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <delete id="deleteDataBefore15" parameterType="java.lang.Integer">
+    DELETE FROM t_handle_record where TO_DAYS(NOW())-TO_DAYS(handleDate) &gt; #{days}
+  </delete>
+  <update id="updateDataByState">
+    update t_handle_record set deleteState = 1
+  </update>
+</mapper>

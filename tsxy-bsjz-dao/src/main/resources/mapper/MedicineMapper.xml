@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tsxy.bsjz.platform.dao.mapper.MedicineMapper">
+  <resultMap id="BaseResultMap" type="tsxy.bsjz.platform.model.Medicine">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="salePrice" jdbcType="DECIMAL" property="salePrice" />
+    <result column="inventory" jdbcType="INTEGER" property="inventory" />
+    <result column="inventoryWarn" jdbcType="INTEGER" property="inventoryWarn" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="classifyId" jdbcType="INTEGER" property="classifyId" />
+    <result column="unitId" jdbcType="INTEGER" property="unitId" />
+    <result column="factoryId" jdbcType="INTEGER" property="factoryId" />
+    <association property="medicineClassify" column="classifyId" select="tsxy.bsjz.platform.dao.mapper.MedicineClassifyMapper.selectByPrimaryKey"/>
+    <association property="medicineUnit" column="unitId" select="tsxy.bsjz.platform.dao.mapper.MedicineUnitMapper.selectByPrimaryKey"/>
+    <association property="medicineFactory" column="factoryId" select="tsxy.bsjz.platform.dao.mapper.MedicineFactoryMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, name, salePrice, inventory, inventoryWarn, remark, description, classifyId, unitId, 
+    factoryId
+  </sql>
+  <select id="selectByExample" parameterType="tsxy.bsjz.platform.model.MedicineExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_medicine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_medicine
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_medicine
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="tsxy.bsjz.platform.model.MedicineExample">
+    delete from t_medicine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="tsxy.bsjz.platform.model.Medicine">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_medicine (name, salePrice, inventory, 
+      inventoryWarn, remark, description, 
+      classifyId, unitId, factoryId
+      )
+    values (#{name,jdbcType=VARCHAR}, #{salePrice,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER}, 
+      #{inventoryWarn,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{classifyId,jdbcType=INTEGER}, #{unitId,jdbcType=INTEGER}, #{factoryId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertIntoMedicineList">
+    insert into t_medicine (name, salePrice, inventory,inventoryWarn, remark, description,classifyId, unitId, factoryId)
+    values
+    <foreach collection="medicineList" item="item" index="index" separator=",">
+      (#{item.name}, #{item.salePrice}, #{item.inventory},#{item.inventoryWarn}, #{item.remark}, #{item.description},#{item.classifyId}, #{item.unitId}, #{item.factoryId})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="tsxy.bsjz.platform.model.Medicine">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_medicine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="salePrice != null">
+        salePrice,
+      </if>
+      <if test="inventory != null">
+        inventory,
+      </if>
+      <if test="inventoryWarn != null">
+        inventoryWarn,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="classifyId != null">
+        classifyId,
+      </if>
+      <if test="unitId != null">
+        unitId,
+      </if>
+      <if test="factoryId != null">
+        factoryId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="inventory != null">
+        #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="inventoryWarn != null">
+        #{inventoryWarn,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyId != null">
+        #{classifyId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null">
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        #{factoryId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="tsxy.bsjz.platform.model.MedicineExample" resultType="java.lang.Long">
+    select count(*) from t_medicine
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_medicine
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.salePrice != null">
+        salePrice = #{record.salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.inventory != null">
+        inventory = #{record.inventory,jdbcType=INTEGER},
+      </if>
+      <if test="record.inventoryWarn != null">
+        inventoryWarn = #{record.inventoryWarn,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classifyId != null">
+        classifyId = #{record.classifyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.unitId != null">
+        unitId = #{record.unitId,jdbcType=INTEGER},
+      </if>
+      <if test="record.factoryId != null">
+        factoryId = #{record.factoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_medicine
+    set id = #{record.id,jdbcType=INTEGER},
+      name = #{record.name,jdbcType=VARCHAR},
+      salePrice = #{record.salePrice,jdbcType=DECIMAL},
+      inventory = #{record.inventory,jdbcType=INTEGER},
+      inventoryWarn = #{record.inventoryWarn,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      classifyId = #{record.classifyId,jdbcType=INTEGER},
+      unitId = #{record.unitId,jdbcType=INTEGER},
+      factoryId = #{record.factoryId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="tsxy.bsjz.platform.model.Medicine">
+    update t_medicine
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="salePrice != null">
+        salePrice = #{salePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="inventory != null">
+        inventory = #{inventory,jdbcType=INTEGER},
+      </if>
+      <if test="inventoryWarn != null">
+        inventoryWarn = #{inventoryWarn,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyId != null">
+        classifyId = #{classifyId,jdbcType=INTEGER},
+      </if>
+      <if test="unitId != null">
+        unitId = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="factoryId != null">
+        factoryId = #{factoryId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="tsxy.bsjz.platform.model.Medicine">
+    update t_medicine
+    set name = #{name,jdbcType=VARCHAR},
+      salePrice = #{salePrice,jdbcType=DECIMAL},
+      inventory = #{inventory,jdbcType=INTEGER},
+      inventoryWarn = #{inventoryWarn,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      classifyId = #{classifyId,jdbcType=INTEGER},
+      unitId = #{unitId,jdbcType=INTEGER},
+      factoryId = #{factoryId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAllLessMedicine" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM t_medicine WHERE
+    inventory &lt; inventoryWarn
+    <if test="medicineSearchDto.name != null and medicineSearchDto.name != '' ">
+      AND name LIKE concat(concat('%',#{medicineSearchDto.name}),'%')
+    </if>
+  </select>
+  <select id="countByInventory" resultType="java.lang.Integer">
+    select count(id) from t_medicine WHERE
+    inventory &lt; inventoryWarn
+    <if test="medicineSearchDto.name != null and medicineSearchDto.name != '' ">
+      AND name LIKE concat(concat('%',#{medicineSearchDto.name}),'%')
+    </if>
+  </select>
+  <update id="updateMedicineClassifyNull" parameterType="java.util.List">
+    UPDATE t_medicine SET classifyId = NULL WHERE classifyId IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <update id="updateMedicineUnitNull" parameterType="java.util.List">
+    UPDATE t_medicine SET unitId = NULL WHERE unitId IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+  <update id="updateMedicineFactoryNull" parameterType="java.util.List">
+    UPDATE t_medicine SET factoryId = NULL WHERE factoryId IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+</mapper>

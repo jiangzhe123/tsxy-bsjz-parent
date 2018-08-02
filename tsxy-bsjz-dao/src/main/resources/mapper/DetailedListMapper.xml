@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tsxy.bsjz.platform.dao.mapper.DetailedListMapper">
+  <resultMap id="BaseResultMap" type="tsxy.bsjz.platform.model.DetailedList">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="patientId" jdbcType="INTEGER" property="patientId" />
+    <result column="totalPrice" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="detailedDate" jdbcType="TIMESTAMP" property="detailedDate" />
+    <association property="patient" column="patientId" select="tsxy.bsjz.platform.dao.mapper.PatientMapper.selectByPrimaryKey"/>
+    <collection property="detailedMedicineList" ofType="tsxy.bsjz.platform.model.DetailedMedicine" column="id" select="tsxy.bsjz.platform.dao.mapper.DetailedMedicineMapper.selectMedicineByDetailedId"/>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, patientId, totalPrice, detailedDate
+  </sql>
+  <select id="selectByExample" parameterType="tsxy.bsjz.platform.model.DetailedListExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_detailed_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_detailed_list
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_detailed_list
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="tsxy.bsjz.platform.model.DetailedListExample">
+    delete from t_detailed_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="tsxy.bsjz.platform.model.DetailedList">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_detailed_list (patientId, totalPrice, detailedDate
+      )
+    values (#{patientId,jdbcType=INTEGER}, #{totalPrice,jdbcType=DECIMAL}, #{detailedDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="tsxy.bsjz.platform.model.DetailedList">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_detailed_list
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        patientId,
+      </if>
+      <if test="totalPrice != null">
+        totalPrice,
+      </if>
+      <if test="detailedDate != null">
+        detailedDate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="patientId != null">
+        #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="detailedDate != null">
+        #{detailedDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="tsxy.bsjz.platform.model.DetailedListExample" resultType="java.lang.Long">
+    select count(*) from t_detailed_list
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update t_detailed_list
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.patientId != null">
+        patientId = #{record.patientId,jdbcType=INTEGER},
+      </if>
+      <if test="record.totalPrice != null">
+        totalPrice = #{record.totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.detailedDate != null">
+        detailedDate = #{record.detailedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update t_detailed_list
+    set id = #{record.id,jdbcType=INTEGER},
+      patientId = #{record.patientId,jdbcType=INTEGER},
+      totalPrice = #{record.totalPrice,jdbcType=DECIMAL},
+      detailedDate = #{record.detailedDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="tsxy.bsjz.platform.model.DetailedList">
+    update t_detailed_list
+    <set>
+      <if test="patientId != null">
+        patientId = #{patientId,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="detailedDate != null">
+        detailedDate = #{detailedDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="tsxy.bsjz.platform.model.DetailedList">
+    update t_detailed_list
+    set patientId = #{patientId,jdbcType=INTEGER},
+      totalPrice = #{totalPrice,jdbcType=DECIMAL},
+      detailedDate = #{detailedDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="Query_By_Dto_Where_Clause">
+    <trim prefix="WHERE" prefixOverrides="AND |OR">
+      <if test="detailedListSearchDto.name != null and detailedListSearchDto.name != ''">
+        OR (patientId IN (SELECT id FROM t_patient WHERE name like CONCAT('%',CONCAT('${detailedListSearchDto.name}','%')))
+      </if>
+      <if test="detailedListSearchDto.phone != null and detailedListSearchDto.phone != ''">
+        OR patientId IN (SELECT id FROM t_patient WHERE phone LIKE CONCAT('%',CONCAT('${detailedListSearchDto.phone}','%'))))
+      </if>
+    </trim>
+  </sql>
+  <select id="selectCountByExample" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM t_detailed_list
+    <if test="_parameter != null">
+      <include refid="Query_By_Dto_Where_Clause" />
+    </if>
+  </select>
+  <select id="selectAllDetailedList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM t_detailed_list
+    <if test="_parameter != null">
+      <include refid="Query_By_Dto_Where_Clause" />
+    </if>
+    <if test="detailedListSearchDto.orderByClause != null and detailedListSearchDto.orderByClause != ''">
+      ORDER BY ${detailedListSearchDto.orderByClause}
+    </if>
+  </select>
+  <select id="selectDetailedCountDto" resultType="tsxy.bsjz.platform.dao.vo.DetailedCountDto">
+    SELECT ySum,tSum FROM v_detailed_count
+  </select>
+  <update id="updatePatient4Null" parameterType="java.util.List">
+    UPDATE t_detailed_list SET patientId = NULL WHERE patientId IN
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+</mapper>

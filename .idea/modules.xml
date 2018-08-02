@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/tsxy-bsjz-dao/tsxy-bsjz-dao.iml" filepath="$PROJECT_DIR$/tsxy-bsjz-dao/tsxy-bsjz-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tsxy-bsjz-manager/tsxy-bsjz-manager.iml" filepath="$PROJECT_DIR$/tsxy-bsjz-manager/tsxy-bsjz-manager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tsxy-bsjz-parent.iml" filepath="$PROJECT_DIR$/tsxy-bsjz-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tsxy-bsjz-service/tsxy-bsjz-service.iml" filepath="$PROJECT_DIR$/tsxy-bsjz-service/tsxy-bsjz-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tsxy-bsjz-utils/tsxy-bsjz-utils.iml" filepath="$PROJECT_DIR$/tsxy-bsjz-utils/tsxy-bsjz-utils.iml" />
+    </modules>
+  </component>
+</project>

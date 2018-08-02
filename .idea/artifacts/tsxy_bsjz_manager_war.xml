@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="tsxy-bsjz-manager:war">
+    <output-path>$PROJECT_DIR$/tsxy-bsjz-manager/target</output-path>
+    <root id="archive" name="tsxy-bsjz-manager-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="tsxy-bsjz-manager:war exploded" />
+    </root>
+  </artifact>
+</component>

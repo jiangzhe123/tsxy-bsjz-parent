@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--数据库驱动 -->
+    <classPathEntry location="E:\IntelliJ IDEA-workspace\tsxy-bsjz-parent\tsxy-bsjz-dao\mysql-connector-java-5.1.1.jar" />
+    <context id="MySQL2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+    	<!-- 分页插件加载
+        <plugin type="tsxy.bsjz.platform.config.MySQLPaginationPlugin"/>
+    	-->
+        <!-- 生成的Java文件的编码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <!-- 格式化java代码 -->
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <!-- 格式化XML代码 -->
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <!-- 不生成注释 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true" /><!-- 是否生成注释代时间戳-->
+            <property name="suppressAllComments" value="true" /><!-- 是否取消注释 -->
+        </commentGenerator>
+        <!--数据库链接地址账号密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/tsxybs" userId="root" password="root">
+        </jdbcConnection>
+        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!--生成Model 实体类类存放位置 -->
+        <javaModelGenerator targetPackage="tsxy.bsjz.platform.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--生成mybatis dao层接口中mapeer映射的.XML文件存放位置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!--生成Dao层mapper 接口interface存放位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="tsxy.bsjz.platform.dao.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!--生成对应表及类名 schema数据库名称  tableName表名domainObjectName实体类 名称 -->
+        <table schema="tsxybs" tableName="" domainObjectName="" enableCountByExample="true" enableUpdateByExample="true" enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+            <property name="useActualColumnNames" value="true" />
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+    </context>
+</generatorConfiguration>
